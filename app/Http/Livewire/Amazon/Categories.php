@@ -13,7 +13,7 @@ class Categories extends Component
     }
 
     public function openCategory($name){
-       $this->redirect('/products/'.$name);
+       $this->redirect('/products/'.str_replace('/','',$name));
     }
 
     public function render()

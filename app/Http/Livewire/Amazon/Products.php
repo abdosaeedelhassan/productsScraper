@@ -13,7 +13,7 @@ class Products extends Component
 
     public function mount($category)
     {
-        $this->selected_category =  $category;
+        $this->selected_category =  '/'.$category;
     }
 
 
