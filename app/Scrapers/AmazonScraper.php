@@ -17,7 +17,7 @@ class AmazonScraper
     {
         $crawler = GoutteFacade::request('GET', 'https://www.amazon.com/');
         $crawler->filter('.fluid-card')->each(function ($node) {
-            try {
+           // try {
                 $name = $node->filter('.a-cardui-header')->filter('h2')->text();
                 $url = $node->filter('.a-cardui-body')->filter('a')->attr('href');
                 $image = $node->filter('.a-cardui-body')
@@ -29,9 +29,9 @@ class AmazonScraper
                     'image' => $image,
                     'url' => str_replace('/b?', 's?', $url)
                 ]);
-            } catch (\Exception $exception) {
-                var_dump($exception);
-            }
+           // } catch (\Exception $exception) {
+            //    var_dump($exception);
+           // }
         });
     }
 
@@ -59,7 +59,7 @@ class AmazonScraper
         Products::where('category_id', $category_id)->delete();
         $crawler = GoutteFacade::request('GET', $url);
         return $crawler->filter('.s-result-item')->each(function ($node) use ($category_id) {
-            try {
+            //try {
                 $image = $node->filter('img')->attr('src');
                 $description = $node->filter('h2')->text();
                 $price = $node->filter('.a-price')->filter('.a-offscreen')->text();
@@ -73,9 +73,9 @@ class AmazonScraper
                     'price' => $price,
                     'old_price' => $old_price,
                 ]);
-            } catch (\Exception $exception) {
-                //var_dump($exception);
-            }
+            //} catch (\Exception $exception) {
+            //    //var_dump($exception);
+            //}
         });
     }
 
