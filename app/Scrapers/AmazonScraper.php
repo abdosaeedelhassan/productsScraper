@@ -26,18 +26,28 @@ class AmazonScraper
 
         foreach ($items as $item) {
 
-            $name = $item->find('.a-cardui-header', 0)->find('h2', 0)->plaintext;
-            $url = $item->find('.a-cardui-body', 0)->find('a', 0)->href;
-            $image = $item->find('.a-cardui-body', 0)
-                ->find('a', 0)
-                ->find('.fluid-image-container', 0)
-                ->find('img', 0)->src;
-
-            Categories::create([
-                'name' => $name,
-                'image' => $image,
-                'url' => str_replace('/b?', 's?', $url)
-            ]);
+            $name = null;
+            if ($item->find('.a-cardui-header', 0)) {
+                $name = $item->find('.a-cardui-header', 0)->find('h2', 0)->plaintext;
+            }
+            $url = null;
+            if ($item->find('.a-cardui-body', 0)) {
+                $url = $item->find('.a-cardui-body', 0)->find('a', 0)->href;
+            }
+            $image = null;
+            if ($item->find('.a-cardui-body', 0)) {
+                $image = $item->find('.a-cardui-body', 0)
+                    ->find('a', 0)
+                    ->find('.fluid-image-container', 0)
+                    ->find('img', 0)->src;
+            }
+            if ($name && $image && $url) {
+                Categories::create([
+                    'name' => $name,
+                    'image' => $image,
+                    'url' => str_replace('/b?', 's?', $url)
+                ]);
+            }
         }
     }
 
