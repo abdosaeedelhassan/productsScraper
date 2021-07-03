@@ -12,8 +12,8 @@ class Categories extends Component
         $this->categories=\App\Scrapers\AmazonScraper::getProductsCategories();
     }
 
-    public function openCategory($url){
-        dd($url);
+    public function openCategory($name){
+       $this->redirect('/products/'.$name);
     }
 
     public function render()

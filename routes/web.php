@@ -15,11 +15,16 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', function () {
-    return view('home');
+    return view('home')->withType('categories');
+});
+
+Route::get('/products/{category}', function ($category) {
+    $category='/b'.str_replace(request()->url(),'',request()->fullUrl());
+    return view('home')->withType('products')->withCategory($category);
 });
 
 
 Route::get('/random', function () {
-    $categories=\App\Scrapers\AmazonScraper::getProductsCategories();
+    $categories=\App\Scrapers\AmazonScraper::getProducts('/b?node=16225007011');
     return response()->json($categories);
 });

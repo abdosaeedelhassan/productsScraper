@@ -19,8 +19,5 @@
         @endforeach
     </div>
 
-    <div wire:loading wire:target="getCategories">
-        <p style="text-align: center">@lang('Please wait...')</p>
-    </div>
-
+    <x-loading target="getCategories"/>
 </div>
