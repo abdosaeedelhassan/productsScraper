@@ -6,6 +6,7 @@ namespace App\Scrapers;
 
 use App\Models\Categories;
 use App\Models\Products;
+use Illuminate\Support\Facades\DB;
 use Weidner\Goutte\GoutteFacade;
 
 class AmazonScraper
@@ -15,24 +16,29 @@ class AmazonScraper
 
     public static function getProductsCategories()
     {
-        $crawler = GoutteFacade::request('GET', 'https://www.amazon.com/');
-        $crawler->filter('.fluid-card')->each(function ($node) {
-           // try {
-                $name = $node->filter('.a-cardui-header')->filter('h2')->text();
-                $url = $node->filter('.a-cardui-body')->filter('a')->attr('href');
-                $image = $node->filter('.a-cardui-body')
-                    ->filter('a')
-                    ->filter('.fluid-image-container')
-                    ->filter('img')->attr('src');
-                Categories::create([
-                    'name' => $name,
-                    'image' => $image,
-                    'url' => str_replace('/b?', 's?', $url)
-                ]);
-           // } catch (\Exception $exception) {
-            //    var_dump($exception);
-           // }
-        });
+
+        $parser = new \App\Scrapers\HtmlParser(self::$base_url);
+        $items = $parser->getItemsByClass('.fluid-card');
+
+
+        DB::table('categories')->delete();
+
+
+        foreach ($items as $item) {
+
+            $name = $item->find('.a-cardui-header', 0)->find('h2', 0)->plaintext;
+            $url = $item->find('.a-cardui-body', 0)->find('a', 0)->href;
+            $image = $item->find('.a-cardui-body', 0)
+                ->find('a', 0)
+                ->find('.fluid-image-container', 0)
+                ->find('img', 0)->src;
+
+            Categories::create([
+                'name' => $name,
+                'image' => $image,
+                'url' => str_replace('/b?', 's?', $url)
+            ]);
+        }
     }
 
 
@@ -54,29 +60,40 @@ class AmazonScraper
 
     public static function getProducts($category_id, $page = 1)
     {
+        DB::table('products')->where('category_id', $category_id)->delete();
+
         $category = Categories::where('id', $category_id)->first();
-        $url = 'https://www.amazon.com/' . $category->url . '&fs=true&page=' . $page;
-        Products::where('category_id', $category_id)->delete();
-        $crawler = GoutteFacade::request('GET', $url);
-        return $crawler->filter('.s-result-item')->each(function ($node) use ($category_id) {
-            //try {
-                $image = $node->filter('img')->attr('src');
-                $description = $node->filter('h2')->text();
-                $price = $node->filter('.a-price')->filter('.a-offscreen')->text();
-                $old_price = $node->filter('.a-text-price')->filter('.a-offscreen')->text();
-                //$error_msg=$node->filter('img')->attr('src');
-                // dd($node->html());
+        $parser = new \App\Scrapers\HtmlParser(self::$base_url . $category->url . '&fs=true&page=' . $page);
+        $items = $parser->getItemsByClass('.s-result-item');
+
+        foreach ($items as $item) {
+            $image = null;
+            if ($item->find('img', 0)) {
+                $image = $item->find('img', 0)->src;
+            }
+            $description = null;
+            if ($item->find('h2', 0)) {
+                $description = $item->find('h2', 0)->plaintext;
+            }
+            $price = null;
+            if ($item->find('.a-price', 0)) {
+                $price = $item->find('.a-price', 0)->find('.a-offscreen', 0)->plaintext;
+            }
+            $old_price = $price;
+            if ($item->find('.a-text-price', 0)) {
+                $old_price = $item->find('.a-text-price', 0)->find('.a-offscreen', 0)->plaintext;
+            }
+            if ($image && $description && $price) {
                 Products::create([
                     'category_id' => $category_id,
                     'image' => $image,
                     'description' => $description,
-                    'price' => $price,
-                    'old_price' => $old_price,
+                    'price' => str_replace('$', '', $price),
+                    'old_price' => str_replace('$', '', $old_price),
                 ]);
-            //} catch (\Exception $exception) {
-            //    //var_dump($exception);
-            //}
-        });
+            }
+        }
+
     }
 
 

@@ -14,6 +14,7 @@ class Products extends Component
     {
         $this->selected_category = $this->getCategory($category);
         $this->getProducts();
+        $this->categories = \App\Models\Categories::all();
     }
 
 
@@ -26,6 +27,9 @@ class Products extends Component
     {
         if ($this->selected_category) {
             $this->products = \App\Models\Products::where('category_id', $this->selected_category->id)->get();
+//            if ($this->getProducts()->count() == 0) {
+//                $this->refreshProducts();
+//            }
         }
     }
 
