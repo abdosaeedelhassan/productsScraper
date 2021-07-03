@@ -24,7 +24,9 @@ class Products extends Component
 
     public function getProducts()
     {
-        $this->products = \App\Models\Products::where('category_id', $this->selected_category->id)->get();
+        if ($this->selected_category) {
+            $this->products = \App\Models\Products::where('category_id', $this->selected_category->id)->get();
+        }
     }
 
     public function refreshProducts()
