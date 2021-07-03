@@ -18,8 +18,8 @@ class CreateProductsTable extends Migration
             $table->foreignId('category_id')->constrained()->cascadeOnDelete();
             $table->string('image');
             $table->text('description');
-            $table->float('price');
-            $table->float('old_price');
+            $table->string('price');
+            $table->string('old_price');
             $table->timestamps();
             $table->softDeletes();
         });

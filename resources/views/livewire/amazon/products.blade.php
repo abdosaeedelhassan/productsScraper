@@ -42,7 +42,7 @@
                                         {{$product['description']}}
                                     </div>
                                     <div class="card-footer">
-                                        @lang('Price') <span style="font-weight: bold">{{$product['price']}}$</span>
+                                        @lang('Price') <span style="font-weight: bold">{{$product['price']}}</span>
                                         <span style="text-decoration: dashed">{{$product['old_price']}}</span>
                                     </div>
                                 </div>
