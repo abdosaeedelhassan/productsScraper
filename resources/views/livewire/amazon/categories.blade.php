@@ -3,6 +3,9 @@
     <div class="row">
         <div class="col-md-12">
             <a wire:click="refreshCategories" class="btn btn-success">@lang('Refresh categories')</a>
+
+            <x-loading target="refreshCategories"/>
+
         </div>
     </div>
 
@@ -31,5 +34,4 @@
         @endif
     </div>
     <x-loading target="getCategories"/>
-    <x-loading target="refreshCategories"/>
 </div>

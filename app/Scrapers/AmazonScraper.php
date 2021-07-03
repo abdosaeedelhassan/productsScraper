@@ -24,7 +24,7 @@ class AmazonScraper
                     ->filter('a')
                     ->filter('.fluid-image-container')
                     ->filter('img')->attr('src');
-                Categories::delete();
+                Categories::truncate();
                 Categories::create([
                     'name' => $name,
                     'image' => $image,
