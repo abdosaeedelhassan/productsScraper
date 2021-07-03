@@ -7,9 +7,20 @@ use Livewire\Component;
 class Categories extends Component
 {
     public $categories=[];
+
+
+    public function mount(){
+        $this->getCategories();
+    }
+
+    public function refreshCategories(){
+        \App\Scrapers\AmazonScraper::getProductsCategories();
+        $this->getCategories();
+    }
+
     public function getCategories()
     {
-        $this->categories=\App\Scrapers\AmazonScraper::getProductsCategories();
+        $this->categories=\App\Models\Categories::all();
     }
 
     public function openCategory($name){
