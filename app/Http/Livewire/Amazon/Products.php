@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire\Amazon;
 
-use App\Scrapers\AmazonScraper;
 use Livewire\Component;
 
 class Products extends Component
@@ -13,21 +12,31 @@ class Products extends Component
 
     public function mount($category)
     {
-        $this->selected_category =  '/'.$category;
+        $this->selected_category = $this->getCategory($category);
+        $this->getProducts();
     }
 
+
+    private function getCategory($id)
+    {
+        return \App\Models\Categories::where('id', $id)->first();
+    }
 
     public function getProducts()
     {
-        $this->categories = \App\Scrapers\AmazonScraper::getProductsCategories();
-        $this->setCategory($this->selected_category);
+        $this->products = \App\Models\Products::where('category_id', $this->selected_category->id)->get();
     }
 
-    public function setCategory($url)
+    public function refreshProducts()
     {
-        $this->selected_category = $url;
-        $this->products=[];
-        $this->products = \App\Scrapers\AmazonScraper::getProducts($this->selected_category);
+        \App\Scrapers\AmazonScraper::getProducts($this->selected_category->id);
+        $this->getProducts();
+    }
+
+    public function setCategory($id)
+    {
+        $this->selected_category = $this->getCategory($id);
+        $this->getProducts();
     }
 
     public function render()

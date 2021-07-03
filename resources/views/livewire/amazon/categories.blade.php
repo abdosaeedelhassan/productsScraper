@@ -21,7 +21,7 @@
                             {{$category['name']}}
                         </div>
                         <div class="card-footer">
-                            <a class="btn btn-success" wire:click="openCategory('{{$category['url']}}')"
+                            <a class="btn btn-success" wire:click="openCategory('{{$category['id']}}')"
                                style="width: 100%">
                                 Details
                             </a>

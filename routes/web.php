@@ -19,7 +19,6 @@ Route::get('/', function () {
 });
 
 Route::get('/products/{category}', function ($category) {
-    $category='b'.str_replace(request()->url(),'',request()->fullUrl());
     return view('home')->withType('products')->withCategory($category);
 });
 
