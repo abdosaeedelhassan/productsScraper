@@ -94,8 +94,8 @@ class AmazonScraper
                     'category_id' => $category_id,
                     'image' => $image,
                     'description' => $description,
-                    'price' => str_replace('$', '', $price),
-                    'old_price' => str_replace('$', '', $old_price),
+                    'price' => str_replace('ريال', '', $price),
+                    'old_price' => str_replace('ريال', '', $old_price),
                 ]);
             }
         }
