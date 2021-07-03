@@ -11,21 +11,17 @@ use Weidner\Goutte\GoutteFacade;
 
 class AmazonScraper
 {
-    private static $base_url = 'https://www.amazon.com/';
+    private static $base_url = 'https://www.amazon.sa/-/ar/';
 
 
     public static function getProductsCategories()
     {
-
         $parser = new \App\Scrapers\HtmlParser(self::$base_url);
         $items = $parser->getItemsByClass('.fluid-card');
 
-
         DB::table('categories')->delete();
 
-
         foreach ($items as $item) {
-
             $name = null;
             if ($item->find('.a-cardui-header', 0)) {
                 $name = $item->find('.a-cardui-header', 0)->find('h2', 0)->plaintext;
