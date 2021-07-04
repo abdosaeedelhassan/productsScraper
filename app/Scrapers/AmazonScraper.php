@@ -103,4 +103,44 @@ class AmazonScraper
     }
 
 
+    public static function getSearch($search, $page = 1)
+    {
+
+        $parser = new \App\Scrapers\HtmlParser(self::$base_url . '/s?k='.$search.'&ref=nb_sb_noss' . '&page=' . $page);
+        $items = $parser->getItemsByClass('.s-result-item');
+
+        $result=[];
+
+        foreach ($items as $item) {
+            $image = null;
+            if ($item->find('img', 0)) {
+                $image = $item->find('img', 0)->src;
+            }
+            $description = null;
+            if ($item->find('h2', 0)) {
+                $description = $item->find('h2', 0)->plaintext;
+            }
+            $price = null;
+            if ($item->find('.a-price', 0)) {
+                $price = $item->find('.a-price', 0)->find('.a-offscreen', 0)->plaintext;
+            }
+            $old_price = $price;
+            if ($item->find('.a-text-price', 0)) {
+                $old_price = $item->find('.a-text-price', 0)->find('.a-offscreen', 0)->plaintext;
+            }
+            if ($image && $description && $price) {
+               array_push($result,[
+                   'image' => $image,
+                   'description' => $description,
+                   'price' => str_replace('ريال', '', $price),
+                   'old_price' => str_replace('ريال', '', $old_price),
+               ]);
+            }
+        }
+
+        return $result;
+    }
+
+
+
 }
