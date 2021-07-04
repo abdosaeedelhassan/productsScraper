@@ -66,7 +66,7 @@ class AmazonScraper
 
     public static function getProducts($category_id, $page = 1)
     {
-        DB::table('products')->where('category_id', $category_id)->delete();
+        DB::table('products')->delete();
 
         $category = Categories::where('id', $category_id)->first();
         $parser = new \App\Scrapers\HtmlParser(self::$base_url . $category->url . '&fs=true&page=' . $page);
@@ -91,11 +91,11 @@ class AmazonScraper
             }
             if ($image && $description && $price) {
                 Products::create([
-                    'category_id' => $category_id,
                     'image' => $image,
                     'description' => $description,
                     'price' => str_replace('ريال', '', $price),
                     'old_price' => str_replace('ريال', '', $old_price),
+                    'url' => ''
                 ]);
             }
         }
@@ -105,11 +105,14 @@ class AmazonScraper
 
     public static function getSearch($search, $page = 1)
     {
-        $query=self::$base_url . 's?k='.$search.'&ref=nb_sb_noss' . '&page=' . $page;
+        DB::table('products')->delete();
+
+
+        $query = self::$base_url . 's?k=' . $search . '&ref=nb_sb_noss' . '&page=' . $page;
         $parser = new \App\Scrapers\HtmlParser($query);
         $items = $parser->getItemsByClass('.s-result-item');
 
-        $result=[];
+        $result = [];
 
         foreach ($items as $item) {
             $image = null;
@@ -118,7 +121,7 @@ class AmazonScraper
             }
             $description = null;
             if ($item->find('.a-text-normal', 1)) {
-                $description = $item->find('.a-text-normal',1)->plaintext;
+                $description = $item->find('.a-text-normal', 1)->plaintext;
             }
             $price = null;
             if ($item->find('.a-price-whole', 0)) {
@@ -126,21 +129,27 @@ class AmazonScraper
             }
             $old_price = $price;
             if ($item->find('.a-offscreen', 1)) {
-                $old_price = $item->find('.a-offscreen',1)->plaintext;
+                $old_price = $item->find('.a-offscreen', 1)->plaintext;
             }
+            $url = '';
+            if ($item->find('. a-link-normal', 0)) {
+                $url = $item->find('. a-link-normal', 0)->href;
+            }
+
+
             if ($image && $description && $price) {
-               array_push($result,[
-                   'image' => $image,
-                   'description' => $description,
-                   'price' => str_replace('ريال', '', $price),
-                   'old_price' => str_replace('ريال', '', $old_price),
-               ]);
+                Products::create([
+                    'image' => $image,
+                    'description' => $description,
+                    'price' => str_replace('ريال', '', $price),
+                    'old_price' => str_replace('ريال', '', $old_price),
+                    'url' => self::$base_url . $url
+                ]);
             }
         }
 
         return $result;
     }
-
 
 
 }

@@ -15,7 +15,8 @@ class Search extends Component
 
     public function doSearch()
     {
-        $this->result = AmazonScraper::getSearch($this->search);
+        AmazonScraper::getSearch($this->search);
+        $this->result = \App\Models\Products::all();
     }
 
     public function render()
