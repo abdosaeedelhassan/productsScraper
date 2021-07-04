@@ -133,7 +133,7 @@ class AmazonScraper
             }
             $url = '';
             if ($item->find('.a-link-normal', 0)) {
-                $url = $item->find('.a-link-normal', 0)->href;
+                $url = substr($item->find('.a-link-normal', 0)->href,1);
             }
 
 
