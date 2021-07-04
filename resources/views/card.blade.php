@@ -11,8 +11,8 @@
                 class="a-section a-spacing-micro s-min-height-small"></div></div><div class="sg-row"><div
                 class="sg-col sg-col-4-of-12 sg-col-4-of-16 sg-col-4-of-20"><div class="sg-col-inner"><div
                         class="a-section a-spacing-none"><span data-component-type="s-product-image"
-                                                               class="rush-component" data-component-id="1"><a
-                                class="a-link-normal s-no-outline"
+                                                               class="rush-component" data-component-id="1">
+                            <a class="a-link-normal s-no-outline"
                                 href="/HP-Chromebook-Processor-Lightweight-14a-na0021nr/dp/B08YKGZF7P/ref=sr_1_1?dchild=1&amp;keywords=Computers&amp;qid=1625425075&amp;sr=8-1">
                                 <div class="a-section aok-relative s-image-fixed-height">
                                     <img class="s-image"

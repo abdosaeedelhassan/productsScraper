@@ -132,8 +132,8 @@ class AmazonScraper
                 $old_price = $item->find('.a-offscreen', 1)->plaintext;
             }
             $url = '';
-            if ($item->find('. a-link-normal', 0)) {
-                $url = $item->find('. a-link-normal', 0)->href;
+            if ($item->find('.a-link-normal', 0)) {
+                $url = $item->find('.a-link-normal', 0)->href;
             }
 
 
