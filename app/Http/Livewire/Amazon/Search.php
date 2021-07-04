@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Amazon;
 
+use App\Scrapers\AmazonScraper;
 use Livewire\Component;
 
 class Search extends Component
@@ -9,8 +10,12 @@ class Search extends Component
     public $search;
 
 
-    public function doSearch(){
+    public $result;
 
+
+    public function doSearch()
+    {
+        $this->result = AmazonScraper::getSearch($this->search);
     }
 
     public function render()
