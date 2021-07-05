@@ -16,6 +16,7 @@ class Search extends Component
 
     public function mount(){
         $this->fill(getSetting([
+            'search_keywords',
             'search_hours',
             'search_minutes'
         ]));
@@ -34,8 +35,11 @@ class Search extends Component
 
     public function saveSettings(){
 
+        saveSetting('search_keywords',$this->search_keywords);
         saveSetting('search_hours',$this->search_hours);
         saveSetting('search_minutes',$this->search_minutes);
+
+
 
         session()->flash('message', 'Post successfully updated.');
     }
