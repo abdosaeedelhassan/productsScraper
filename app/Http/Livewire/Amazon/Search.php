@@ -11,6 +11,10 @@ class Search extends Component
 
     public function doSearch()
     {
+        $this->validate([
+            'search' => 'required'
+        ]);
+
         AmazonScraper::getSearch($this->search);
         $this->emit('refreshProducts');
     }
