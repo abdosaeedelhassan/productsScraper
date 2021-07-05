@@ -1,12 +1,9 @@
-<div class="col-md-6 mt-3">
+<div class="col-md-4 mt-3">
     <div class="card">
         <div class="card-header p-0">
             <img style="height: 200px;width: 100%" src="{{$product['image']}}">
         </div>
         <div class="card-body">
-
-
-
             <table>
                 <tr>
                     <td>
@@ -30,8 +27,6 @@
                     </td>
                 </tr>
             </table>
-
-
         </div>
     </div>
 </div>

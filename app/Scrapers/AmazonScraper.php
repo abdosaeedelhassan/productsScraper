@@ -18,9 +18,7 @@ class AmazonScraper
     {
         $parser = new \App\Scrapers\HtmlParser(self::$base_url);
         $items = $parser->getItemsByClass('.fluid-card');
-
         DB::table('categories')->delete();
-
         foreach ($items as $item) {
             $name = null;
             if ($item->find('.a-cardui-header', 0)) {
@@ -67,11 +65,9 @@ class AmazonScraper
     public static function getProducts($category_id, $page = 1)
     {
         DB::table('products')->delete();
-
         $category = Categories::where('id', $category_id)->first();
         $parser = new \App\Scrapers\HtmlParser(self::$base_url . $category->url . '&fs=true&page=' . $page);
         $items = $parser->getItemsByClass('.s-result-item');
-
         foreach ($items as $item) {
             $image = null;
             if ($item->find('img', 0)) {
@@ -99,21 +95,15 @@ class AmazonScraper
                 ]);
             }
         }
-
     }
 
 
     public static function getSearch($search, $page = 1)
     {
         DB::table('products')->delete();
-
-
         $query = self::$base_url . 's?k=' . $search . '&ref=nb_sb_noss' . '&page=' . $page;
         $parser = new \App\Scrapers\HtmlParser($query);
         $items = $parser->getItemsByClass('.s-result-item');
-
-        $result = [];
-
         foreach ($items as $item) {
             $image = null;
             if ($item->find('img', 0)) {
@@ -135,8 +125,6 @@ class AmazonScraper
             if ($item->find('.a-link-normal', 0)) {
                 $url = substr($item->find('.a-link-normal', 0)->href,1);
             }
-
-
             if ($image && $description && $price) {
                 Products::create([
                     'image' => $image,
@@ -147,8 +135,6 @@ class AmazonScraper
                 ]);
             }
         }
-
-        return $result;
     }
 
 

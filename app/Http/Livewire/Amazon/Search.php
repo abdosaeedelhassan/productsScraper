@@ -9,14 +9,10 @@ class Search extends Component
 {
     public $search;
 
-
-    public $result;
-
-
     public function doSearch()
     {
         AmazonScraper::getSearch($this->search);
-        $this->result = \App\Models\Products::all();
+        $this->emit('refreshProducts');
     }
 
     public function render()

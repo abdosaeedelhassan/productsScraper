@@ -25,12 +25,4 @@
             </table>
         </div>
     </div>
-
-    @if($result)
-        <div class="row">
-            @foreach($result as $key=>$product)
-                <x-product :product="$product"/>
-            @endforeach
-        </div>
-    @endif
 </div>
