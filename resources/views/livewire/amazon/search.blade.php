@@ -1,4 +1,4 @@
-<div>
+<div wire:ignore>
 
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item">
@@ -53,7 +53,43 @@
         <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
             <div class="card">
                 <div class="card-body">
-                    search setting her
+                    <div class="row">
+                        <label class="col-md-2">
+                            @lang('Search keywords')
+                        </label>
+                        <div class="col-md-10">
+                            <input type="text" wire:model.lazy="search_keywords" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <label class="col-md-2">
+                            @lang('Search every')
+                        </label>
+                        <div class="col-md-5">
+                            <select wire:model.lazy="search_hours" class="form-control">
+                                @for($i=0;$i<=12;$i++)
+                                    <option value="{{$i}}">{{$i}} @if($i==1)Hour @else Hours @endif</option>
+                                @endfor
+                            </select>
+                        </div>
+                        <div class="col-md-5">
+                            <select wire:model.lazy="search_minutes" class="form-control">
+                                @for($i=0;$i<=60;$i++)
+                                    <option value="{{$i}}">{{$i}} @if($i==1)Minute @else Minutes @endif</option>
+                                @endfor
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                            <a class="btn btn-sm btn-success" wire:click="saveSettings">@lang('Save')</a>
+                        </div>
+                    </div>
+
+
                 </div>
             </div>
         </div>

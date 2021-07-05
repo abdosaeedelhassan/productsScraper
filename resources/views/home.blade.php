@@ -1,4 +1,5 @@
 <x-layout>
+    <x-flashmessages/>
     <div class="row">
         <div class="col-md-12">
             <livewire:amazon.search/>
