@@ -5,7 +5,7 @@ function getSetting($key, $default = '')
     if (is_array($key)) {
         $settings = \App\Models\Settings::whereIn('key', $key)->get();
         $data = [];
-        foreach ($key as $item) {
+        foreach ($key as $index=>$item) {
             $found = false;
             foreach ($settings as $setting) {
                 if ($setting->key == $item) {

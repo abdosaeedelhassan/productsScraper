@@ -25,8 +25,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+
+
         // $schedule->command('inspire')->hourly();
         $schedule->call(function () {
+
 
             $settings = getSetting([
                 'search_keywords',
@@ -35,22 +38,32 @@ class Kernel extends ConsoleKernel
                 'last_search_time'
             ], null);
 
+
             $search_keywords = $settings['search_keywords'];
+
+
             $search_hours = $settings['search_hours'];
             $search_minutes = $settings['search_minutes'];
+
+
             $last_search_time = $settings['last_search_time'];
 
-            if ($search_keywords && $search_hours && $search_minutes) {
+
+            if (strlen($search_keywords) > 0 && strlen($search_hours) > 0 && strlen($search_minutes) > 0) {
+
                 $totalTimeInMinutes = ($search_hours * 60) + $search_minutes;
-                $now = new \DateTime();
                 if ($last_search_time) {
                     $future_date = new \DateTime($last_search_time);
                 } else {
                     $last_search_time = date('Y-m-d H:i:s');
+                    saveSetting('last_search_time', $last_search_time);
                     $future_date = new \DateTime($last_search_time);
                 }
+                
+                $now = new \DateTime();
                 $future_date->modify('+' . $totalTimeInMinutes . ' minutes');
                 $formatted_date = $future_date->format('Y-m-d H:i:s');
+
                 if ($now->format('Y-m-d H:i:s') > $formatted_date) {
                     AmazonScraper::getSearch($search_keywords);
                     saveSetting('last_search_time', date('Y-m-d H:i:s'));

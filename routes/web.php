@@ -19,5 +19,5 @@ Route::get('/', function () {
 });
 
 Route::get('/random', function () {
-    //
+//
 });
