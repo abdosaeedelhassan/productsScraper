@@ -59,7 +59,7 @@ class Kernel extends ConsoleKernel
                     saveSetting('last_search_time', $last_search_time);
                     $future_date = new \DateTime($last_search_time);
                 }
-                
+
                 $now = new \DateTime();
                 $future_date->modify('+' . $totalTimeInMinutes . ' minutes');
                 $formatted_date = $future_date->format('Y-m-d H:i:s');
